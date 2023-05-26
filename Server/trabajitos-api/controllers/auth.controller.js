@@ -9,7 +9,7 @@ const controller = {};
 controller.register = async (req,res) => {
   try {
   // Paso 01: Obtener datos del usuario
-  const { name, phone, email, password} = req.body;
+  const { name, phone, email, password, municipality} = req.body;
 
   // Paso 02: Verificar el username o el email esten libres
 
@@ -25,17 +25,18 @@ controller.register = async (req,res) => {
   
   // Paso 04: Guardar usuario 
 
-  const newUser = new User ({
-      name: name,
-      phone: phone,
-      email: email,
-      password: password,
-      roles: [ROLES.USER]
-  })
+    const newUser = new User ({
+        name: name,
+        phone: phone,
+        email: email,
+        password: password,
+        municipality: municipality,
+        roles: [ROLES.USER]
+    })
 
-  await newUser.save();
+    await newUser.save();
 
-  return res.status(201).json ({ message: "Usuario guardado con exito!"})
+    return res.status(201).json ({ message: "Usuario guardado con exito!"})
 
   } catch (error) {
       debug({ error });
@@ -89,6 +90,9 @@ controller.whoami = async (req, res) => {
   }
 }
 
+controller.edithProfile = async (req, res) => {
+
+};
 
 
 module.exports = controller;

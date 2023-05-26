@@ -1,6 +1,6 @@
 const { verifyToken } = require ("../utils/jwt.tools");
 const debug = require("debug")("app:auth-middleware");
-const User = require("../models/User.model");
+const User = require("../models/TUser.model");
 
 const ROLES = require("./../data/roles.constants.json");
 

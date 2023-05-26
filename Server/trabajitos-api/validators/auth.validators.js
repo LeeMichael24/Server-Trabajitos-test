@@ -9,7 +9,7 @@ validators.registerValidator = [
     body("name")
         .notEmpty().withMessage("El nombre no puede ir vacío"),
     body("phone")
-        .notEmpty().withMessage("El nombre no puede ir vacío")
+        .notEmpty().withMessage("El teléfono no puede ir vacío")
         .isMobilePhone().withMessage("Debes ingresar un numero valido"),
     body("email")
         .notEmpty().withMessage("El correo no debe ir vacío")

@@ -30,8 +30,12 @@ const trabajitoSchema = new Schema({
     id_hired: {
         type: Schema.Types.ObjectId,
         ref: "User"
+    },
+    state: {
+        type: Schema.Types.ObjectId,
+        ref: "State",
+        default: "64703ad8c301c25cdbcd30c7"
     }
-    
 });
 
 

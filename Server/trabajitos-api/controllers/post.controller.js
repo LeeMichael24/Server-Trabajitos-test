@@ -1,5 +1,5 @@
 const Post = require("../models/Post.model");
-const User = require('../models/User.model');
+const User = require('../models/TUser.model');
 const debug = require ("debug")("app:post-controller");
 
 

@@ -6,15 +6,13 @@ const controller = {};
 
 controller.create = async (req, res) => {
     try {
-        const {description, dateInit, dateFinish, endNumber, state} = req.body;
+        const {description, dateInit, state} = req.body;
 
         const { _id: userId } = req.user;
 
         const trabajito = new Trabajito({
             description: description,
             dateInit: dateInit,
-            dateFinish: dateFinish,
-            endNumber: endNumber,
             state: state,
             user: userId
         });
@@ -51,7 +49,7 @@ controller.findAll = async (req, res) =>{
     }
 }
 
-controller.togglePostVisibility = async (req, res) => {
+/* controller.togglePostVisibility = async (req, res) => {
     try {
       const { identifier: trabajitoId } = req.params;
       const { _id: userId } = req.user;
@@ -75,4 +73,4 @@ controller.togglePostVisibility = async (req, res) => {
       debug({ error });
       return res.status(500).json({ error: "Error interno de servidor" });
     }
-}
+} */

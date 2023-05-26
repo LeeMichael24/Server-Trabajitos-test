@@ -40,6 +40,11 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    municipality: {
+        type: Schema.Types.ObjectId,
+        ref: "Municipality",
+        default: "6470328ac301c25cdbcd30c3"
+    },
     roles : {
         type: [String],
         default : []

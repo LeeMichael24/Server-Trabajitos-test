@@ -17,6 +17,11 @@ const PortfolioSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
+    }, 
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+        default: "647037c1c301c25cdbcd30c6"
     }
 });
 
