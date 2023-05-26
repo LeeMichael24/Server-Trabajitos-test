@@ -33,6 +33,8 @@ controller.create = async (req, res) => {
 
 // aca hay que pensar como hacer para que el usuario pueda ver sus trabajitos con los estados que tiene en cada momento
 
+//en esta parte seria cuando el usuario quiere 
+//ver sus trabajitos que tiene en el momento
 
 controller.findAll = async (req, res) =>{
     try {
@@ -48,6 +50,10 @@ controller.findAll = async (req, res) =>{
         return res.status(500).json({error: "Error interno de servidor"})
     }
 }
+
+
+//aca tenemos que hacer la parte en la que el usuario pueda ver los trabajitos pero
+// desde modo contratante
 
 /* controller.togglePostVisibility = async (req, res) => {
     try {
