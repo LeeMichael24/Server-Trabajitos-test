@@ -15,8 +15,6 @@ const router = express.Router();
 router.use("/auth", authRouter);
 router.use("/post", postRouter);
 
-//router.use("/contact", contactRouter); 
-
 
 
 module.exports = router;

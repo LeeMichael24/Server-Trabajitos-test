@@ -1,4 +1,4 @@
-const User =  require("../models/User.model");
+const User =  require("../models/TUser.model");
 const debug =  require("debug")("app:auth-controller");
 const ROLES = require("../data/roles.constants.json")
 
@@ -9,11 +9,11 @@ const controller = {};
 controller.register = async (req,res) => {
   try {
   // Paso 01: Obtener datos del usuario
-  const { username , email, password} = req.body;
+  const { name, phone, email, password} = req.body;
 
   // Paso 02: Verificar el username o el email esten libres
 
-  const user = await User.findOne({ $or: [{username : username}, {email : email}] });
+  const user = await User.findOne({email : email});
   
   if(user){
       return res.status(409).json({ error: "Este usuario ya existe"});
@@ -26,7 +26,8 @@ controller.register = async (req,res) => {
   // Paso 04: Guardar usuario 
 
   const newUser = new User ({
-      username: username,
+      name: name,
+      phone: phone,
       email: email,
       password: password,
       roles: [ROLES.USER]

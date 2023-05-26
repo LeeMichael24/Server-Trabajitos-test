@@ -4,7 +4,7 @@ const debug = require ("debug")("app:user-model");
 
 const crypto = require("crypto");
 
-const Userchema = new Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         trim : true,
@@ -84,4 +84,4 @@ userSchema.virtual("password")
         this.hashedpassword = this.encryptPassword(password);
 })
 
-module.exports = Mongoose.model("User", Userchema);
+module.exports = Mongoose.model("user", userSchema);

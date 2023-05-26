@@ -2,34 +2,25 @@ const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 
 
-const trabajitoSchema = new Schema({
+const reviewSchema = new Schema({
     description: {
         type: String,
         trim: true,
         required: true
     },
-    dateInit: {
-        type: Date,
+    qualification: {
+        type: Number,
         required: true
     },
-    dateFinish: {
-        type: Date
-    },
-    endNumber: {
-        type: String
-    },
-    hidden: {
-        type: Boolean,
-        default: false
-    },
-    id_solicitor: {
+    id_user: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    id_hired: {
+    id_portfolio: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "Portfolio",
+        required: true
     }
     
 });

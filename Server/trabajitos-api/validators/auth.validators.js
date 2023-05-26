@@ -6,9 +6,11 @@ const passwordRegexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,32})/
 
 
 validators.registerValidator = [
-    body("username")
-        .notEmpty().withMessage("El usuario no puede ir vacío")
-        .isLength({min: 4, max: 32}).withMessage("El username debe tener entre 4 y 32 caracteres"),
+    body("name")
+        .notEmpty().withMessage("El nombre no puede ir vacío"),
+    body("phone")
+        .notEmpty().withMessage("El nombre no puede ir vacío")
+        .isMobilePhone().withMessage("Debes ingresar un numero valido"),
     body("email")
         .notEmpty().withMessage("El correo no debe ir vacío")
         .isEmail().withMessage("Debes verificar el formato del correo"),
