@@ -1,29 +1,52 @@
-const user = require("../models/TUser.model");
+const User = require("../models/TUser.model");
 const Trabajito = require("../models/Trabajito.model");
+const debug = require("debug")("app:trabajito-controller");
 
 
 const controller = {};
 
 controller.create = async (req, res) => {
     try {
-        const {description, dateInit, state} = req.body;
+        const {description, dateInit, status, id_hired} = req.body;
 
         const { _id: userId } = req.user;
 
         const trabajito = new Trabajito({
             description: description,
             dateInit: dateInit,
-            state: state,
-            user: userId
+            status: status,
+            id_solicitor: userId,
+            id_hired: id_hired
         });
 
         const newTrabajito = await trabajito.save();
 
         if (!newTrabajito){
-            return res.status (409).json ({error :"Ocurrio un error al tratar de crear un trabajito = JobRequest"});
+            return res.status (409).json ({error :"Ocurrio un error al tratar de crear un trabajito"});
         }
 
         return res.status(201).json(newTrabajito);
+    } catch (error) {
+        debug({error})
+        return res.status(500).json({error: "Error interno de servidor"})
+    }
+}
+
+//Confirmation tentativo
+controller.confirmation = async (req, res) => {
+    try {
+        const {_id: trabajitoId ,dateFinish} = req.body;
+
+        const trabajito = await Trabajito.findOne({ _id: trabajitoId});
+
+        if (!trabajito) {
+            return res.status(404).json({ error: "Trabajito no encontrado" });
+        }
+
+        trabajito.dateFinish = dateFinish;
+        //trabajito.status = 
+
+        
     } catch (error) {
         debug({error})
         return res.status(500).json({error: "Error interno de servidor"})
@@ -41,7 +64,7 @@ controller.findAll = async (req, res) =>{
         const trabajito = 
             await Trabajito
             .find({ hidden: false })
-            .populate("user", "username email");
+            .populate("id_solicitor id_hired status");
   
         return res.status(200).json ({ trabajito })
         
@@ -50,6 +73,8 @@ controller.findAll = async (req, res) =>{
         return res.status(500).json({error: "Error interno de servidor"})
     }
 }
+
+module.exports = controller;
 
 
 //aca tenemos que hacer la parte en la que el usuario pueda ver los trabajitos pero

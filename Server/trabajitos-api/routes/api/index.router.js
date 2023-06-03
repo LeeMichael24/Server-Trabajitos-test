@@ -6,6 +6,8 @@ const router = express.Router();
 
  const postRouter = require("./post.router");
  const authRouter = require ("./auth.router");
+ const trabajitoRouter = require("./trabajitos.router");
+ const pruebasRouter = require("./pruebas.router")
 
 
 // const contactRouter = require ("./contact.router");
@@ -13,6 +15,8 @@ const router = express.Router();
 
 //definir las rutas
 router.use("/auth", authRouter);
+router.use("/trabajito", trabajitoRouter);
+router.use("/pruebas", pruebasRouter);
 router.use("/post", postRouter);
 
 

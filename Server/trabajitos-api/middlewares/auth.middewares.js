@@ -46,7 +46,7 @@ middlewares.authentication = async (req, res , next) => {
         }
 
         //Paso 04: Token registrado 
-        const isTokenValid = user.tokens.includes(token);
+        const isTokenValid = user.token.includes(token);
         if(!isTokenValid){
             return res.status(401).json({error: "No autorizado"});   
         }

@@ -26,4 +26,4 @@ const reviewSchema = new Schema({
 });
 
 
-module.exports = Mongoose.model("Trabajito", trabajitoSchema);
+module.exports = Mongoose.model("Review", reviewSchema);

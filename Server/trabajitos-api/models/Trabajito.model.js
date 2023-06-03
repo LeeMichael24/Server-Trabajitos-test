@@ -1,7 +1,6 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 
-
 const trabajitoSchema = new Schema({
     description: {
         type: String,
@@ -29,12 +28,12 @@ const trabajitoSchema = new Schema({
     },
     id_hired: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     },
-    state: {
+    status: {
         type: Schema.Types.ObjectId,
-        ref: "State",
-        default: "64703ad8c301c25cdbcd30c7"
+        ref: "Status"
     }
 });
 

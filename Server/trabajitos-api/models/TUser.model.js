@@ -42,8 +42,7 @@ const userSchema = new Schema({
     },
     municipality: {
         type: Schema.Types.ObjectId,
-        ref: "Municipality",
-        default: "6470328ac301c25cdbcd30c3"
+        ref: "Municipality"
     },
     roles : {
         type: [String],
@@ -89,4 +88,4 @@ userSchema.virtual("password")
         this.hashedpassword = this.encryptPassword(password);
 })
 
-module.exports = Mongoose.model("user", userSchema);
+module.exports = Mongoose.model("User", userSchema);

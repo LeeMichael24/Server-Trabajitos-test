@@ -1,24 +1,14 @@
 const { body, param } = require("express-validator");
 const validators = {};
 
-validators.createPostValidator = [
+validators.createTrabajitoValidator = [
     body("description")
         .notEmpty()
-        .withMessage("La descripción no debe ser vacio")
-        .isLength({ max: 280 }).withMessage("La descripcion no debe superar los 240 carcteres"),
+        .withMessage("La descripción no debe ir vacia")
+        .isLength({ max: 280 }).withMessage("La descripcion no debe superar los 280 carcteres"),
     body("dateInit")
         .notEmpty()
-        .withMessage("La fecha de inicio no debe estar vacia"),
-    body("email")
-        .notEmpty()
-        .withMessage("Debe escribir su correo"),
-    body("id_solicitor")
-        .notEmpty()
-        .withMessage("El campo de usuario no debe estar vacio"),
-    body("state")
-        .notEmpty()
-        .withMessage("El estado no debe estar vacio"),
-
+        .withMessage("La fecha de inicio no debe ir vacia")
 ];
 
 

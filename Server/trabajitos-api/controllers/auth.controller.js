@@ -49,8 +49,8 @@ controller.login = async(req,res) => {
   try {
       const {identifier, password} = req.body;
       //Paso 01: verficar si el usuario existe 
-      const user = await User.findOne({ $or: [{username: identifier}, {email: identifier}]});
-
+      const user = await User.findOne({email: identifier});
+      
       if (!user) {
           return res.status(404).json ({error: "El usuario no existe"});
       }
@@ -66,7 +66,7 @@ controller.login = async(req,res) => {
       const token = createToken(user._id);
 
 
-      user.tokens = [token, ...user.tokens.filter(_token => verifyToken(_token)).splice(0,4)];
+      user.token = [token, ...user.token.filter(_token => verifyToken(_token)).splice(0,4)];
       await user.save();
 
       //Paso 04: Registrar los token
@@ -90,8 +90,41 @@ controller.whoami = async (req, res) => {
   }
 }
 
-controller.edithProfile = async (req, res) => {
+controller.findAll = async (req, res) => {
+  try {
+    const usuarios = await User.aggregate(
+      [
+        {$lookup:
+        {
+          from: "municipalities",
+          localField:"municipality",
+          foreignField:"_id",
+          as: "municipality"
+        }}
+      ]
+    )
+    
+    return res.status(200).json({usuarios})
 
+  } catch (error) {
+    debug({error})
+    return res.status(500).json({error: "Error interno de servidor"})
+  }
+};
+
+
+controller.findAll2 = async (req, res) => {
+  try {
+    const usuarios = await User
+      .find()
+      .populate("municipality")
+    
+    return res.status(200).json({usuarios})
+
+  } catch (error) {
+    debug({error})
+    return res.status(500).json({error: "Error interno de servidor"})
+  }
 };
 
 
