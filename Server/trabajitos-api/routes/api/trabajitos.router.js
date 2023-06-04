@@ -4,7 +4,7 @@ const router = express.Router();
 const ROLES = require("../../data/roles.constants.json");
 
 const trabajitoController = require("../../controllers/trabajitos.controller");
-const trabajitoValidator = require("../../validators/trabajito.validatosr");
+const trabajitoValidator = require("../../validators/trabajito.validators");
 const runValidations = require("../../validators/index.middleware");
 
 const {authentication, authorization} = require("../../middlewares/auth.middewares");

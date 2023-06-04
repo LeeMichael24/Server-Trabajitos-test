@@ -13,6 +13,10 @@ const portfolioSchema = new Schema({
         trim: true,
         required: true
     },
+    images: {
+        type: [String],
+        default: []
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -20,8 +24,12 @@ const portfolioSchema = new Schema({
     }, 
     category: {
         type: Schema.Types.ObjectId,
-        default: "647037c1c301c25cdbcd30c6"
-    }
+        ref: "Category"
+    },
+    reviews: [{ 
+        type: Schema.Types.ObjectId,
+        ref: "Review"
+    }]
 });
 
 

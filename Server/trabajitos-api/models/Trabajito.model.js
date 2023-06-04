@@ -15,7 +15,8 @@ const trabajitoSchema = new Schema({
         type: Date
     },
     endNumber: {
-        type: String
+        type: String,
+        default: " "
     },
     hidden: {
         type: Boolean,
@@ -33,7 +34,8 @@ const trabajitoSchema = new Schema({
     },
     status: {
         type: Schema.Types.ObjectId,
-        ref: "Status"
+        ref: "Status",
+        required: true
     }
 });
 
