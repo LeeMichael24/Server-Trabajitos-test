@@ -24,7 +24,8 @@ const portfolioSchema = new Schema({
     }, 
     category: {
         type: Schema.Types.ObjectId,
-        ref: "Category"
+        ref: "Category",
+        required: true
     },
     reviews: [{ 
         type: Schema.Types.ObjectId,
