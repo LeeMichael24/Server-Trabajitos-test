@@ -11,16 +11,30 @@ const {authentication, authorization} = require("../../middlewares/auth.middewar
 
 //Ruta de consulta basica, esta no va a produccion
 router.get("/", trabajitoController.findAll);
+
+//Ruta de solicitudes de trabajitos
 router.get("/requests",
     authentication,
-    authorization(ROLES.USER),
     trabajitoController.findMyRequests    
+)
+//Ruta de solicitud de trabajito especifico
+router.get("/requests/:identifier",
+    authentication,
+    trabajitoValidator.findByIdValidator,
+    runValidations,
+    trabajitoController.findRequestById    
 )
 
 router.get("/jobs",
     authentication,
-    authorization(ROLES.USER),
     trabajitoController.findMyJobs  
+)
+
+router.get("/job/:identifier",
+    authentication,
+    trabajitoValidator.findByIdValidator,
+    runValidations,
+    trabajitoController.findJobById    
 )
 
 //Funcionalidad usuario solicitante
@@ -30,6 +44,25 @@ router.post("/",
     trabajitoValidator.createTrabajitoValidator,
     runValidations,
     trabajitoController.create
+);
+
+
+router.patch("/start",
+    authentication,
+    authorization(ROLES.USER),
+    trabajitoController.startTrabajito
+);
+
+router.patch("/finish",
+    authentication,
+    authorization(ROLES.USER),
+    trabajitoController.endTrabajito
+);
+
+router.patch("/finalization",
+    authentication,
+    authorization(ROLES.USER),
+    trabajitoController.endConfirmationTrabajito
 );
 
 router.patch("/deletion/:identifier",
