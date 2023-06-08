@@ -1,10 +1,13 @@
-const User = require("../models/TUser.model");
 const Trabajito = require("../models/Trabajito.model");
 const debug = require("debug")("app:trabajito-controller");
 
 
 const controller = {};
 
+/**
+ * Esta request permite crear un trabajito, requiere descripcion, fechaInicio, status
+ * y el id de la persona a contratar
+ */
 controller.create = async (req, res) => {
     try {
         const {description, dateInit, status, id_hired} = req.body;
@@ -54,17 +57,61 @@ controller.confirmation = async (req, res) => {
 }
 
 
-// aca hay que pensar como hacer para que el usuario pueda ver sus trabajitos con los estados que tiene en cada momento
-
-//en esta parte seria cuando el usuario quiere 
-//ver sus trabajitos que tiene en el momento
-
+/**
+ * Esta request permite encontrar todos los trabajitos
+ * con informacion de quien pide el trabajito y quien lo realizara
+ */
 controller.findAll = async (req, res) =>{
     try {
+        const trabajitos = 
+            await Trabajito
+            .find() //{ hidden: false }
+            .populate("id_solicitor status", "name phone email")
+            .populate("id_hired", "name phone email");
+  
+        return res.status(200).json ({ trabajitos })
+        
+    } catch (error) {
+        debug({error})
+        return res.status(500).json({error: "Error interno de servidor"})
+    }
+}
+
+
+/**
+ * Esta request permite encontrar los trabajitos que han sido
+ * solicitados por un usuario
+ */
+controller.findMyRequests = async (req, res) =>{
+    try {
+        const { _id: userId } = req.user;
+
+        const trabajitos = 
+            await Trabajito
+            .find({ id_solicitor: userId, hidden: false })
+            .populate("id_hired status", "name phone email");
+  
+        return res.status(200).json ({ trabajitos })
+        
+    } catch (error) {
+        debug({error})
+        return res.status(500).json({error: "Error interno de servidor"})
+    }
+}
+
+
+/**
+ * Esta request permite encontrar los trabajitos que han sido
+ * solicitados al usuario por otro (Mis pedidos)
+ */
+controller.findMyJobs = async (req, res) =>{
+    try {
+        const { _id: userId } = req.user;
+
         const trabajito = 
             await Trabajito
-            .find({ hidden: false })
-            .populate("id_solicitor id_hired status");
+            .find({ id_hired: userId })
+            .populate("id_solicitor status", "name phone email");
   
         return res.status(200).json ({ trabajito })
         
@@ -74,34 +121,39 @@ controller.findAll = async (req, res) =>{
     }
 }
 
-module.exports = controller;
 
+/**
+ * Esta request permite "eliminar" un trabajito de la base por lo que no sera visible
+ * de cara al usuario
+ */
 
-//aca tenemos que hacer la parte en la que el usuario pueda ver los trabajitos pero
-// desde modo contratante
-
-/* controller.togglePostVisibility = async (req, res) => {
+controller.trabajitoDeletion = async (req, res) => {
     try {
       const { identifier: trabajitoId } = req.params;
       const { _id: userId } = req.user;
   
-      //Paso 01: Obtenemos el post
-      //Paso 02: Verificamos la pertenencia del post al usuario
-      const trabajito = await Trabajito.findOne({ _id: trabajitoId, user: userId });
+      //Paso 01: Obtener el trabajito
+      //Paso 02: Verificar la pertenencia del trabajito al usuario
+      //A tener en cuenta, el trabajito solo podra ser "eliminado" por el usuario que solicita el trabajo
+      const trabajito = await Trabajito.findOne({ _id: trabajitoId, id_solicitor: userId });
   
-      if (!portfolio) {
-        return res.status(404).json({ error: "Portfolio no encontrado" });
+      if (!trabajito) {
+        return res.status(404).json({ error: "Trabajito no encontrado" });
       }
   
-      //Paso 03: Modifico el valor
+      //Paso 03: Modificar el valor
       trabajito.hidden = !trabajito.hidden;
   
-      //Paso 04: Guardo los cambios
+      //Paso 04: Guardar los cambios
       await trabajito.save();
   
-      return res.status(200).json({ message: "Portfolio actualizado" })
+      return res.status(200).json({ message: "Trabajito eliminado" })
     } catch (error) {
       debug({ error });
       return res.status(500).json({ error: "Error interno de servidor" });
     }
-} */
+}
+
+//HACE FALTA ENCONTRAR UN TRABAJITO POR ID PARA MOSTRA LA INFORMACION QUE SE VE DETALLADA
+
+module.exports = controller;

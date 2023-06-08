@@ -1,10 +1,13 @@
-
 const Portfolio = require("../models/TPortfolio.model");
 const debug = require("debug")("app:portfolio-controller");
 
 
 const controller = {};
 
+/**
+ * Esta request permite al usuario poder crear un portfolio para ofrecer
+ * sus servicios dentro de la app
+ */
 controller.create = async (req, res) => {
     try {
         const {title, description, image, category} = req.body;
@@ -32,45 +35,16 @@ controller.create = async (req, res) => {
     }
 }
 
-//Confirmation tentativo
-controller.confirmation = async (req, res) => {
-    try {
-        const {_id: trabajitoId ,dateFinish} = req.body;
 
-        const trabajito = await Portfolio.findOne({ _id: trabajitoId});
-
-        if (!trabajito) {
-            return res.status(404).json({ error: "Trabajito no encontrado" });
-        }
-
-        trabajito.dateFinish = dateFinish;
-        //trabajito.status = 
-
-        
-    } catch (error) {
-        debug({error})
-        return res.status(500).json({error: "Error interno de servidor"})
-    }
-}
-
-
-// aca hay que pensar como hacer para que el usuario pueda ver sus trabajitos con los estados que tiene en cada momento
-
-//en esta parte seria cuando el usuario quiere 
-//ver sus trabajitos que tiene en el momento
-
-
-//find() es para buscar todos los trabajitos sin ningun parametro
-//populate() es para traer los datos de la relacion, campos del esquema
-
-
-//cuando vamos a buscar usuarios o trabajos no se requieren campos enviados desde imsonia.
+/**
+ * Esta request permite encontrar todos los portafolios dentro de la app
+ */
 controller.findAll = async (req, res) =>{
     try {
         const portfolios = 
             await Portfolio
             .find()
-            .populate("user category reviews");
+            .populate("user category", "name phone"); //reviews to be added to populate
   
         return res.status(200).json ({ portfolios })
         
@@ -80,34 +54,30 @@ controller.findAll = async (req, res) =>{
     }
 }
 
-module.exports = controller;
 
-
-//aca tenemos que hacer la parte en la que el usuario pueda ver los trabajitos pero
-// desde modo contratante
-
-/* controller.togglePostVisibility = async (req, res) => {
+/**
+ * Esta request permite encontrar todos los portafolios que pertenezcan a cierta
+ * categoria
+ */
+controller.findPortfoliosByCategory = async (req, res) =>{
     try {
-      const { identifier: trabajitoId } = req.params;
-      const { _id: userId } = req.user;
+        const { category } = req.body
+
+        const portfolios = 
+            await Portfolio
+            .find({category: category})
+            .populate("user category", "name phone");
   
-      //Paso 01: Obtenemos el post
-      //Paso 02: Verificamos la pertenencia del post al usuario
-      const trabajito = await Trabajito.findOne({ _id: trabajitoId, user: userId });
-  
-      if (!portfolio) {
-        return res.status(404).json({ error: "Portfolio no encontrado" });
-      }
-  
-      //Paso 03: Modifico el valor
-      trabajito.hidden = !trabajito.hidden;
-  
-      //Paso 04: Guardo los cambios
-      await trabajito.save();
-  
-      return res.status(200).json({ message: "Portfolio actualizado" })
+        return res.status(200).json ({ portfolios })
+        
     } catch (error) {
-      debug({ error });
-      return res.status(500).json({ error: "Error interno de servidor" });
+        debug({error})
+        return res.status(500).json({error: "Error interno de servidor"})
     }
-} */
+}
+
+//Para agregar reviews se hara una actualizacion, se pide un Portfolio que tenga como user el id de
+//la persona a quien se contrato, al tener el Portfolio se accede a su atributo reviews que sera un arreglo
+//de objetos donde se ingresara la review y tambien el userID de quien la deja
+
+module.exports = controller;

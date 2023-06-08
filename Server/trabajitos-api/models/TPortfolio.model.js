@@ -27,10 +27,27 @@ const portfolioSchema = new Schema({
         ref: "Category",
         required: true
     },
-    reviews: [{ 
-        type: Schema.Types.ObjectId,
-        ref: "Review"
-    }]
+    otherReviews: {
+        reviews:[{
+            description: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            qualification: {
+                type: Number,
+                required: true
+            },
+            id_user: {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            }
+        }
+        ],
+        default: []
+
+    }
 });
 
 

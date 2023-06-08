@@ -18,14 +18,14 @@ const trabajitoSchema = new Schema({
         type: String,
         default: " "
     },
-    hidden: {
-        type: Boolean,
-        default: false
-    },
     id_solicitor: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    hidden: {
+        type: Boolean,
+        default: false
     },
     id_hired: {
         type: Schema.Types.ObjectId,

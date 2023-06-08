@@ -11,6 +11,17 @@ const {authentication, authorization} = require("../../middlewares/auth.middewar
 
 //Ruta de consulta basica, esta no va a produccion
 router.get("/", trabajitoController.findAll);
+router.get("/requests",
+    authentication,
+    authorization(ROLES.USER),
+    trabajitoController.findMyRequests    
+)
+
+router.get("/jobs",
+    authentication,
+    authorization(ROLES.USER),
+    trabajitoController.findMyJobs  
+)
 
 //Funcionalidad usuario solicitante
 router.post("/",
@@ -19,6 +30,14 @@ router.post("/",
     trabajitoValidator.createTrabajitoValidator,
     runValidations,
     trabajitoController.create
+);
+
+router.patch("/deletion/:identifier",
+    authentication,
+    authorization(ROLES.USER),
+    trabajitoValidator.findByIdValidator,
+    runValidations,
+    trabajitoController.trabajitoDeletion
 );
 
 module.exports = router;

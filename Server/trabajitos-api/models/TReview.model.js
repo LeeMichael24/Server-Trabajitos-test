@@ -16,14 +16,7 @@ const reviewSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
-    },
-    id_portfolio: {
-        type: Schema.Types.ObjectId,
-        ref: "Portfolio",
-        required: true
-    }
-    
+    }    
 });
-
 
 module.exports = Mongoose.model("Review", reviewSchema);
